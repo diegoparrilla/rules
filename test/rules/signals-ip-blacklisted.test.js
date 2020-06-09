@@ -25,7 +25,7 @@ describe(ruleName, () => {
         if (id === 'broken') {
           return Promise.reject();
         }
-        
+
         expect(id).toEqual('12345');
         expect(metadata.source_ip.ip).toEqual('188.6.125.49');
         return Promise.resolve();
@@ -43,16 +43,16 @@ describe(ruleName, () => {
       .build();
     user = new UserBuilder()
       .build();
-    });
+  });
 
   it('should get data found from Signals and add it to idToken and user metadata', (done) => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json'
-      },    
+      },
     })
       .get('/badip/188.6.125.49?token=YOUR_AUTH0SIGNALS_API_KEY')
-      .reply(200, {response: ['STOPFORUMSPAM-1']});
+      .reply(200, { response: ['STOPFORUMSPAM-1'] });
 
     rule(user, context, (err, u, c) => {
       expect(err).toBeFalsy();
@@ -67,7 +67,7 @@ describe(ruleName, () => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json'
-      },    
+      },
     })
       .get('/badip/188.6.125.49?token=YOUR_AUTH0SIGNALS_API_KEY')
       .reply(404);
@@ -84,7 +84,7 @@ describe(ruleName, () => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json',
-      },    
+      },
     })
       .get('/badip/188.6.125.49?token=YOUR_AUTH0SIGNALS_API_KEY')
       .replyWithError(new Error('test error'));
@@ -100,7 +100,7 @@ describe(ruleName, () => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json'
-      },    
+      },
     })
       .get('/badip/188.6.125.49?token=YOUR_AUTH0SIGNALS_API_KEY')
       .reply(429);
@@ -117,7 +117,7 @@ describe(ruleName, () => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json'
-      },    
+      },
     })
       .get('/badip/188.6.125.49?token=YOUR_AUTH0SIGNALS_API_KEY')
       .reply(400);

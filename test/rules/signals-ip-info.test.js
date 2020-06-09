@@ -10,37 +10,37 @@ const UserBuilder = require('../utils/userBuilder');
 const ruleName = 'signals-ip-info';
 
 const responseJson = {
-  'ip':{
-     'address':'188.6.125.49',
-     'hostname':'',
-     'country':'HU',
-     'country_names':{
-     },
-     'country_geoname_id':719819,
-     'continent':'EU',
-     'continent_names':{
-     },
-     'continent_geoname_id':6255148,
-     'latitude':0,
-     'longitude':0,
-     'time_zone':'Europe/Budapest',
-     'region':'Budapest',
-     'region_names':{
-     },
-     'region_geoname_id':3054638,
-     'city':'Budapest',
-     'city_names':{
-     },
-     'city_geoname_id':3054643,
-     'accuracy_radius':20,
-     'postal':'',
-     'as':{
-        'name':'Magyar Telekom plc.',
-        'country':'HU',
-        'networks':[
-        ],
-        'asn':'5483'
-     }
+  'ip': {
+    'address': '188.6.125.49',
+    'hostname': '',
+    'country': 'HU',
+    'country_names': {
+    },
+    'country_geoname_id': 719819,
+    'continent': 'EU',
+    'continent_names': {
+    },
+    'continent_geoname_id': 6255148,
+    'latitude': 0,
+    'longitude': 0,
+    'time_zone': 'Europe/Budapest',
+    'region': 'Budapest',
+    'region_names': {
+    },
+    'region_geoname_id': 3054638,
+    'city': 'Budapest',
+    'city_names': {
+    },
+    'city_geoname_id': 3054643,
+    'accuracy_radius': 20,
+    'postal': '',
+    'as': {
+      'name': 'Magyar Telekom plc.',
+      'country': 'HU',
+      'networks': [
+      ],
+      'asn': '5483'
+    }
   }
 };
 
@@ -60,7 +60,7 @@ describe(ruleName, () => {
         if (id === 'broken') {
           return Promise.reject();
         }
-        
+
         expect(id).toEqual('12345');
         return Promise.resolve();
       }
@@ -77,13 +77,13 @@ describe(ruleName, () => {
       .build();
     user = new UserBuilder()
       .build();
-    });
+  });
 
   it('should get geo data from Signals and add it to idToken and user metadata', (done) => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json'
-      },    
+      },
     })
       .get('/geoip/188.6.125.49?token=YOUR_AUTH0SIGNALS_API_KEY')
       .reply(200, responseJson);
@@ -106,10 +106,10 @@ describe(ruleName, () => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json'
-      },    
+      },
     })
       .get('/geoip/188.6.125.49?token=YOUR_AUTH0SIGNALS_API_KEY')
-      .reply(200, {ip:{}});
+      .reply(200, { ip: {} });
     rule(user, context, (err, u, c) => {
       expect(err).toBeFalsy();
       expect(c.idToken['https://example.com/country_code']).toEqual('');
@@ -128,7 +128,7 @@ describe(ruleName, () => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json',
-      },    
+      },
     })
       .get('/geoip/188.6.125.49?token=YOUR_AUTH0SIGNALS_API_KEY')
       .replyWithError(new Error('test error'));
@@ -144,7 +144,7 @@ describe(ruleName, () => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json'
-      },    
+      },
     })
       .get('/geoip/188.6.125.49?token=YOUR_AUTH0SIGNALS_API_KEY')
       .reply(429);
@@ -158,6 +158,6 @@ describe(ruleName, () => {
       done();
     });
   });
-  
+
 });
 

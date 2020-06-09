@@ -10,70 +10,70 @@ const UserBuilder = require('../utils/userBuilder');
 const ruleName = 'signals-email-confidence-score';
 
 const responseJson = {
-  'response':{
-     'email':{
-        'blacklist':[
-           'TEST-EMAIL'
-        ],
-        'score':-1
-     },
-     'domain':{
-        'blacklist':[
-           'TEST-DOMAIN'
-        ],
-        'blacklist_mx':[
+  'response': {
+    'email': {
+      'blacklist': [
+        'TEST-EMAIL'
+      ],
+      'score': -1
+    },
+    'domain': {
+      'blacklist': [
+        'TEST-DOMAIN'
+      ],
+      'blacklist_mx': [
 
-        ],
-        'blacklist_ns':[
+      ],
+      'blacklist_ns': [
 
-        ],
-        'mx':[
-           'mx.test.com'
-        ],
-        'ns':[
-           'ns.test.com'
-        ],
-        'score':-1
-     },
-     'disposable':{
-        'is_disposable':false,
-        'score':0
-     },
-     'freemail':{
-        'is_freemail':true,
-        'score':0
-     },
-     'ip':{
-        'blacklist':[
-           'TEST-IP'
-        ],
-        'is_quarantined':false,
-        'address':'1.2.3.4',
-        'score':-1
-     },
-     'source_ip':{
-        'blacklist':[],
-        'is_quarantined':false,
-        'address':'88.3.83.46',
-        'score':0
-     },
-     'address':{
-        'is_role':false,
-        'is_well_formed':true,
-        'score':0
-     },
-     'smtp':{
-        'exist_mx':true,
-        'exist_address':true,
-        'exist_catchall':false,
-        'graylisted':false,
-        'timedout':false,
-        'score':0
-     },
-     'score':-3,
-     'email_address':'test@example.com'
+      ],
+      'mx': [
+        'mx.test.com'
+      ],
+      'ns': [
+        'ns.test.com'
+      ],
+      'score': -1
+    },
+    'disposable': {
+      'is_disposable': false,
+      'score': 0
+    },
+    'freemail': {
+      'is_freemail': true,
+      'score': 0
+    },
+    'ip': {
+      'blacklist': [
+        'TEST-IP'
+      ],
+      'is_quarantined': false,
+      'address': '1.2.3.4',
+      'score': -1
+    },
+    'source_ip': {
+      'blacklist': [],
+      'is_quarantined': false,
+      'address': '88.3.83.46',
+      'score': 0
+    },
+    'address': {
+      'is_role': false,
+      'is_well_formed': true,
+      'score': 0
+    },
+    'smtp': {
+      'exist_mx': true,
+      'exist_address': true,
+      'exist_catchall': false,
+      'graylisted': false,
+      'timedout': false,
+      'score': 0
+    },
+    'score': -3,
+    'email_address': 'test@example.com'
   },
-  'type':'bademail'
+  'type': 'bademail'
 };
 
 describe(ruleName, () => {
@@ -92,7 +92,7 @@ describe(ruleName, () => {
         if (id === 'broken') {
           return Promise.reject();
         }
-        
+
         expect(id).toEqual('12345');
         return Promise.resolve();
       }
@@ -109,13 +109,13 @@ describe(ruleName, () => {
       .build();
     user = new UserBuilder()
       .build();
-    });
+  });
 
   it('should get email reputation score from Signals and add it to idToken and user metadata', (done) => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json'
-      },    
+      },
     })
       .get('/bademail/superuser@users.com?timeout=0&token=YOUR_AUTH0SIGNALS_API_KEY')
       .reply(200, responseJson);
@@ -160,7 +160,7 @@ describe(ruleName, () => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json'
-      },    
+      },
     })
       .get('/bademail/superuser@users.com?timeout=0&token=YOUR_AUTH0SIGNALS_API_KEY')
       .reply(429);
@@ -176,7 +176,7 @@ describe(ruleName, () => {
     nock('https://signals.api.auth0.com', {
       reqheaders: {
         'content-type': 'application/json',
-      },    
+      },
     })
       .get('/bademail/superuser@users.com?timeout=0&token=YOUR_AUTH0SIGNALS_API_KEY')
       .replyWithError(new Error('test error'));
